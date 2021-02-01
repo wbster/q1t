@@ -1,6 +1,6 @@
 {
-  "name": "state",
-  "version": "0.1.0",
+  "name": "q1t",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
