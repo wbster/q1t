@@ -1,6 +1,6 @@
 {
   "name": "q1t",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -11,10 +11,10 @@
     "url": "https://github.com/wbster/q1t.git"
   },
   "keywords": [
-      "state",
-      "reaction",
-      "observable",
-      "observer"
+    "state",
+    "reaction",
+    "observable",
+    "observer"
   ],
   "author": "",
   "license": "ISC",
