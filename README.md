@@ -21,3 +21,20 @@ You no longer need to create new objects, just update the value by `key` and the
     console.log(user.target)
     // { "name": "alex", "age": 16 }
 ```
+
+## reaction to a change in one of
+
+```javascript
+const object = q1t({
+    a: 0,
+    b: 0,
+})
+
+object.onOf(['a', 'b'], ({ a, b }) => {
+    console.log('one of the values (a|b) has been changed', a, b)
+})
+
+object.set('a', 5)
+
+object.set('b', 16)
+```

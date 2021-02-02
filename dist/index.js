@@ -13,6 +13,10 @@ module.exports = function state(target) {
             target[name] = value;
             event.emit(name, value);
         },
+        onOf(names, func) {
+            const descripts = names.map(name => this.on(name, () => func(target)));
+            return () => descripts.forEach(descriptor => descriptor());
+        },
         target: target,
         clear() {
             event.events = {};
