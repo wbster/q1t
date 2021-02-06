@@ -1,24 +1,24 @@
 type Events = Record<string, Array<Function>>
 
 export default class EventEmitter {
-	events: Events;
+	eventList: Events
 
 	constructor() {
-		this.events = {};
+		this.eventList = {}
 	}
 
 	on(name: string, func: Function) {
-		if (!this.events[name])
-			this.events[name] = [];
-		this.events[name].push(func);
-		return () => this.off(name, func);
+		if (!this.eventList[name])
+			this.eventList[name] = []
+		this.eventList[name].push(func)
+		return () => this.off(name, func)
 	}
 
 	off(name: string, func: Function) {
-		if (!this.events[name])
-			this.events[name] = [];
-		this.events[name] = this.events[name].filter(method => method !== func);
-		return () => this.on(name, func);
+		if (!this.eventList[name])
+			this.eventList[name] = []
+		this.eventList[name] = this.eventList[name].filter(method => method !== func)
+		return () => this.on(name, func)
 	}
 
 	once(name: string, func: Function) {
@@ -30,9 +30,9 @@ export default class EventEmitter {
 	}
 
 	emit(name: string, ...args) {
-		if (!this.events[name])
-			this.events[name] = [];
-		this.events[name].forEach(func => func(...args))
+		if (!this.eventList[name])
+			this.eventList[name] = []
+		this.eventList[name].forEach(func => func(...args))
 	}
 }
 
