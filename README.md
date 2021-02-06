@@ -9,7 +9,7 @@ You no longer need to create new objects, just update the value by `key` and the
 ## Usage
 ---
 ```javascript
-import quantum = from 'q1t'
+import quantum from 'q1t'
 
 const user = quantum({
     name: 'alex',
