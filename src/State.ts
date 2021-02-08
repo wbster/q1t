@@ -3,7 +3,8 @@ export type Param = Record<string, any>
 
 export default class State<T extends Param> {
 	private eventEmitter: EventEmitter
-	constructor(private target: T) {
+	public target: T
+	constructor(target: T) {
 		this.eventEmitter = new EventEmitter()
 		this.target = target
 	}
