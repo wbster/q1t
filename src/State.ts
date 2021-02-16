@@ -53,5 +53,4 @@ export default class State<T extends Param> {
 	remove<U extends keyof T & string>(name: U) {
 		delete this.eventEmitter.eventList[name]
 	}
-
 }

@@ -4,6 +4,7 @@
         "module": "CommonJS",
         "sourceMap": false,
         "declaration": true,
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "lib": ["WebWorker", "ES2020"]
     },
 }
