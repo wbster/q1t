@@ -4,6 +4,7 @@
 **q1t** - is a library for managing states inside an object.
 You no longer need to create new objects, just update the value by `key` and there will be a reaction to the change.
 
+[Worker](#Worker)<br>
 [API](#API)
 
 ## Usage
@@ -16,7 +17,7 @@ const user = quantum({
     age: 15
 })
 
-user.on('age', newAge => {
+user.on('age', age => {
     console.log('Happy Birthday!')
 })
 
@@ -43,6 +44,38 @@ object.oneOf(['a', 'b'], ({ a, b }) => {
 object.set('a', 5)
 
 object.set('b', 16)
+```
+
+## Worker
+one state between worker and main
+___
+
+`state.js`
+```javascript
+import WorkerState from 'q1t/WorkerState'
+
+const state = new WorkerState({
+    name: 'alex',
+    age: 15
+})
+export default state
+```
+`worker.js`
+```javascript
+import state from './state.js'
+
+state.init(self)
+state.set('age', 16)
+```
+
+`main.js`
+```javascript
+import state from './state.js'
+
+state.on('age', age => {
+    console.log(age) // 16
+})
+state.connect('/worker.js')
 ```
 
 # API

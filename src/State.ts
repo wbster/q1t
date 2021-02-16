@@ -3,7 +3,7 @@ export type Param = Record<string, any>
 
 export default class State<T extends Param> {
 	private eventEmitter: EventEmitter
-	public target: T
+	public readonly target: T
 	constructor(target: T) {
 		this.eventEmitter = new EventEmitter()
 		this.target = target
@@ -53,5 +53,4 @@ export default class State<T extends Param> {
 	remove<U extends keyof T & string>(name: U) {
 		delete this.eventEmitter.eventList[name]
 	}
-
 }
