@@ -75,4 +75,14 @@ describe('tests', () => {
 		expect(test.eventEmitter.eventList['a'].length).toBe(0)
 
 	})
+
+	test('awaitChange', () => {
+		const quant = q1t({
+			name: 'alex'
+		})
+		quant
+			.awaitChange('name')
+			.then(name => expect(name).toBe('Max'))
+		quant.set('name', 'Max')
+	})
 })

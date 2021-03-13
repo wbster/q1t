@@ -2,11 +2,21 @@ import EventEmitter from "./EventEmitter"
 export type Param = Record<string, any>
 
 export default class State<T extends Param> {
-	private eventEmitter: EventEmitter
+	protected eventEmitter: EventEmitter
 	public readonly target: T
 	constructor(target: T) {
 		this.eventEmitter = new EventEmitter()
 		this.target = target
+	}
+
+	awaitChange<U extends keyof T & string>(name: U): Promise<T[U]> {
+		return new Promise(res => {
+			this.once(name, res)
+		})
+	}
+
+	protected getNames() {
+		return <Array<keyof T & string>>Object.keys(this.target)
 	}
 
 	update(target: Partial<T>) {
@@ -26,6 +36,10 @@ export default class State<T extends Param> {
 	set<U extends keyof T & string>(name: U, value: T[U]): void {
 		this.target[name] = value
 		this.eventEmitter.emit(name, value, this.target)
+	}
+
+	get<U extends keyof T & string>(name: U): T[U] {
+		return this.target[name]
 	}
 
 	oneOf<U extends keyof T & string>(names: Array<U>, func: (target: T) => void) {

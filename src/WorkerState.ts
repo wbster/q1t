@@ -2,10 +2,6 @@ import State from "./State";
 
 export default class WorkerState<T> extends State<T>{
 
-	private getNames() {
-		return <Array<keyof T & string>>Object.keys(this.target)
-	}
-
 	connect(url: string) {
 		const names = this.getNames()
 		const worker = new Worker(url)
