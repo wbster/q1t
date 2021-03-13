@@ -62,7 +62,7 @@ describe('tests', () => {
 		expect(test.eventEmitter.eventList['a']).toBe(undefined)
 	})
 
-	test('describe', () => {
+	test('unsubscribe', () => {
 		const test = q1t({
 			a: false
 		})
