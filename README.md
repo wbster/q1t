@@ -78,6 +78,55 @@ state.on('age', age => {
 state.connect('/worker.js')
 ```
 
+# Depends
+
+```javascript
+// item with price and value in currency
+const item = q1t({ 
+    price: 2,
+    currencyPrice: 0
+})
+
+const currency = q1t({
+    value: 1,
+    symbol: '$'
+})
+
+item.depends([ 
+    // Depends on currency
+    currency.give(['value']) // give access to change "value"
+    // ... another depends
+], () => {
+    return ({
+        // update item prop
+        currencyPrice: currency.get('value') * item.get('price')
+    })
+})
+
+item.once('currencyPrice', currencyPrice => {
+    console.log('currencyPrice has been updated', currencyPrice)
+})
+
+currency.update({
+    symbol: '€',
+    value: 0.84,
+})
+```
+
+Await change
+```javascript
+const quant = q1t({
+    name: 'Alex'
+})
+
+quant
+    .awaitChange('name')
+    .then(name => {
+        console.log('name has been changed', name)
+    })
+
+quant.set('name', 'Max')
+```
 # API
 `const state = q1t(target: Object)`
 

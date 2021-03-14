@@ -1,12 +1,36 @@
 import EventEmitter from "./EventEmitter"
 export type Param = Record<string, any>
 
+const takeSymbol = Symbol()
+type GiveObject = {
+	[takeSymbol]: (func: () => void) => () => void
+}
+
 export default class State<T extends Param> {
+
 	protected eventEmitter: EventEmitter
 	public readonly target: T
+
 	constructor(target: T) {
 		this.eventEmitter = new EventEmitter()
 		this.target = target
+	}
+
+	give<U extends keyof T & string>(names: Array<U>): GiveObject {
+		return {
+			[takeSymbol]: (func: () => void) => {
+				return this.oneOf(names, func)
+			}
+		}
+	}
+
+	depends(takes: Array<GiveObject>, func: () => Partial<T>) {
+		const unsubscribers = takes
+			.map(t => t[takeSymbol])
+			.map(fn => fn(() => this.update(func())))
+		return () => {
+			unsubscribers.forEach(fn => fn())
+		}
 	}
 
 	awaitChange<U extends keyof T & string>(name: U): Promise<T[U]> {

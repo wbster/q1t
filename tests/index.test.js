@@ -85,4 +85,31 @@ describe('tests', () => {
 			.then(name => expect(name).toBe('Max'))
 		quant.set('name', 'Max')
 	})
+
+	test('depends', () => {
+		const item = q1t({
+			price: 2,
+			currencyPrice: 0
+		})
+
+		const currency = q1t({
+			value: 1,
+			symbol: '$'
+		})
+
+		item.depends([
+			currency.give(['value'])
+		], () => {
+			return ({
+				currencyPrice: currency.get('value') * item.get('price')
+			})
+		})
+
+		currency.update({
+			symbol: '€',
+			value: 0.84,
+		})
+
+		expect(item.target.currencyPrice).toBe(0.84 * 2)
+	})
 })
