@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "preversion": "npm test",
-    "version": "npm run build"
+    "version": "npm test",
+    "preversion": "npm run build"
   },
   "repository": {
     "type": "git",
