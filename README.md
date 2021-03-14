@@ -26,7 +26,18 @@ user.set('age', 16)
 console.log(user.target)
 // { "name": "alex", "age": 16 }
 ```
+## actions
+```javascript
+const state = q1t({ count: 1 })
 
+const { increase } = state.createActions('count', {
+    increase: count => count + 1,
+    decrease: count => count - 1
+})
+
+increase()
+state.get('count') // 2
+```
 ## reaction to a change in one of
 
 ```javascript
@@ -78,7 +89,7 @@ state.on('age', age => {
 state.connect('/worker.js')
 ```
 
-# Depends
+## Depends
 
 ```javascript
 // item with price and value in currency
@@ -113,7 +124,7 @@ currency.update({
 })
 ```
 
-Await change
+## Await change
 ```javascript
 const quant = q1t({
     name: 'Alex'
