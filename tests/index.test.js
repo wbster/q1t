@@ -112,4 +112,16 @@ describe('tests', () => {
 
 		expect(item.target.currencyPrice).toBe(0.84 * 2)
 	})
+
+	test('actions', async () => {
+		const state = q1t({ count: 1 })
+		const actions = state.createActions('count', {
+			increase: count => count + 1,
+			decrease: count => count - 1
+		})
+
+		actions.increase()
+		actions.increase()
+		expect(state.get('count')).toBe(3)
+	})
 })

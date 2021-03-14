@@ -6,6 +6,8 @@ type GiveObject = {
 	[takeSymbol]: (func: () => void) => () => void
 }
 
+type Action<T> = <U extends keyof T & string>(value: T[U]) => T[U]
+
 export default class State<T extends Param> {
 
 	protected eventEmitter: EventEmitter
@@ -14,6 +16,14 @@ export default class State<T extends Param> {
 	constructor(target: T) {
 		this.eventEmitter = new EventEmitter()
 		this.target = target
+	}
+
+	createActions<N extends string, U extends keyof T & string>(name: U, actions: Record<N, Action<T>>): Record<N, () => void> {
+		const list: Partial<Record<N, () => void>> = {}
+		for (let key in actions) {
+			list[<N>key] = () => this.set(name, actions[key](this.get(name)))
+		}
+		return <Required<Record<N, () => void>>>list
 	}
 
 	give<U extends keyof T & string>(names: Array<U>): GiveObject {
