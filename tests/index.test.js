@@ -62,7 +62,7 @@ describe('tests', () => {
 		expect(test.eventEmitter.eventList['a']).toBe(undefined)
 	})
 
-	test('describe', () => {
+	test('unsubscribe', () => {
 		const test = q1t({
 			a: false
 		})
@@ -74,5 +74,15 @@ describe('tests', () => {
 		// @ts-ignore
 		expect(test.eventEmitter.eventList['a'].length).toBe(0)
 
+	})
+
+	test('awaitChange', () => {
+		const quant = q1t({
+			name: 'alex'
+		})
+		quant
+			.awaitChange('name')
+			.then(name => expect(name).toBe('Max'))
+		quant.set('name', 'Max')
 	})
 })
