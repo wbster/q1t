@@ -1,6 +1,6 @@
-import State from "./State";
+import { State } from "./State";
 
-export default class WorkerState<T> extends State<T>{
+export class WorkerState<T> extends State<T>{
 
 	connect(url: string) {
 		const names = this.getNames()
@@ -20,7 +20,7 @@ export default class WorkerState<T> extends State<T>{
 			worker.terminate()
 		}
 	}
-	
+
 	init(self: DedicatedWorkerGlobalScope) {
 		const names = this.getNames()
 		const unsubscribers = names.map(name => this.on(name, value => self.postMessage({ name, value })))
@@ -32,7 +32,7 @@ export default class WorkerState<T> extends State<T>{
 			this.set(name, value)
 			subsciber()
 		})
-		
+
 		return () => {
 			unsubscribers.forEach(unsubscriber => unsubscriber())
 			self.close()

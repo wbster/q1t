@@ -1,6 +1,6 @@
 type Events = Record<string, Array<Function>>
 
-export default class EventEmitter {
+export class EventEmitter {
 	eventList: Events
 
 	constructor() {
@@ -35,4 +35,3 @@ export default class EventEmitter {
 		this.eventList[name].forEach(func => func(...args))
 	}
 }
-

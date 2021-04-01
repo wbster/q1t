@@ -1,7 +1,7 @@
-import State, { Param } from "./State"
+import { State, Param } from "./State"
 
-export = function state<T extends Param>(target: T) {
+const q1t = function state<T extends Param>(target: T) {
 	return new State(target)
 }
 
-exports.State = State
+export = q1t

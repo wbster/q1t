@@ -63,7 +63,7 @@ ___
 
 `state.js`
 ```javascript
-import WorkerState from 'q1t/WorkerState'
+import { WorkerState } from 'q1t/WorkerState'
 
 const state = new WorkerState({
     name: 'alex',

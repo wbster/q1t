@@ -1,4 +1,4 @@
-import EventEmitter from "./EventEmitter"
+import { EventEmitter } from "./EventEmitter"
 export type Param = Record<string, any>
 
 const takeSymbol = Symbol()
@@ -8,7 +8,7 @@ type GiveObject = {
 
 type Action<T> = <U extends keyof T & string>(value: T[U]) => T[U]
 
-export default class State<T extends Param> {
+export class State<T extends Param> {
 
 	protected eventEmitter: EventEmitter
 	public readonly target: T
