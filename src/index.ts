@@ -1,7 +1,5 @@
-import { State, Param } from "./State"
-
-const q1t = function state<T extends Param>(target: T) {
-	return new State(target)
-}
-
-export = q1t
+export * from './State'
+export * from './core/BehaviorSubject'
+export * from './core/Observable'
+export * from './operators'
+export * from './createWorkerState'

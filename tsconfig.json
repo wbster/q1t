@@ -1,10 +1,16 @@
 {
-    "compilerOptions": {
-        "target": "ES2020",
-        "module": "CommonJS",
-        "sourceMap": false,
-        "declaration": true,
-        "outDir": "./dist",
-        "lib": ["WebWorker", "ES2020"]
-    },
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "sourceMap": false,
+    "declaration": true,
+    "outDir": "./dist",
+    "lib": [
+      "WebWorker",
+      "ES2020"
+    ],
+    "types": [
+      "bun-types"
+    ]
+  },
 }
