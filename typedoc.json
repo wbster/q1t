@@ -1,0 +1,10 @@
+{
+  "excludeExternals": true,
+  "entryPoints": [
+    "./src/index.ts"
+  ],
+  "externalPattern": [
+    "**/node_modules/**"
+  ],
+  "out": "./docs"
+}
