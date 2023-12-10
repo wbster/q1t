@@ -1,5 +1,6 @@
 import { State } from "./State"
-import { Observable } from "./core"
+import { Observable } from "./core/Observable"
+import { Subscription } from "./core/Subscription"
 
 type Options = {
 	isWorker: true
@@ -32,26 +33,31 @@ function workerObservable<T>(worker: Worker) {
 	})
 }
 
-export function createWorkerState<T>(initialValue: T, options: Options): State<T> {
+export function createWorkerState<T>(state: State<T>, options: Options): Subscription {
 
 	let ignoreMode = false
-	const state = new State<T>(initialValue)
 
+	const subs = [] as Subscription[]
 	if ('isWorker' in options && options.isWorker) {
 		const onMessage = createOnMessage<T>()
 
-		onMessage.subscribe(event => {
+		const onMessageSibsription = onMessage.subscribe(event => {
 			ignoreMode = true
 			state.next(event.data)
 			ignoreMode = false
 		})
 
-		state.subscribe(value => {
+		const stateSubscription = state.subscribe(value => {
 			if (ignoreMode) return
 			postMessage(value)
 		})
 
-		return state
+		subs.push(onMessageSibsription)
+		subs.push(stateSubscription)
+
+		return new Subscription(() => {
+			subs.forEach(sub => sub.unsubscribe())
+		})
 
 	}
 
@@ -66,24 +72,23 @@ export function createWorkerState<T>(initialValue: T, options: Options): State<T
 		throw new Error('options is wrong')
 	}
 
-	workerObservable<T>(worker)
+
+	const workerSubscription = workerObservable<T>(worker)
 		.subscribe(data => {
 			ignoreMode = true
 			state.next(data)
 			ignoreMode = false
 		})
 
-	state.subscribe(value => {
+	const stateSubscription = state.subscribe(value => {
 		if (ignoreMode) return
 		worker.postMessage(value)
 	})
 
-	return state
-}
+	subs.push(workerSubscription, stateSubscription)
 
-createWorkerState({ value: 1 }, {
-	'isWorker': true
-})
-	.subscribe(value => {
-		console.log('value.value', value.value)
+	return new Subscription(() => {
+		subs.forEach(sub => sub.unsubscribe())
 	})
+
+}
