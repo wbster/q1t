@@ -1,5 +1,5 @@
 import { describe, expect, it, mock } from "bun:test"
-import { Subject } from "../core"
+import { Subject } from "../core/Subject"
 import { skipLast } from "./skipLast"
 
 describe('skipLast', () => {

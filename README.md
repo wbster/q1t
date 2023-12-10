@@ -1,60 +1,32 @@
 # **q1t** *(quant)*
 
 
-**q1t** - is a library for managing states inside an object.
-You no longer need to create new objects, just update the value by `key` and there will be a reaction to the change.
-
-[Worker](#Worker)<br>
-[API](#API)
+**q1t** - rxjs like state manager
 
 ## Usage
----
+
+
 ```javascript
-import quantum from 'q1t'
+import { createState } from 'q1t'
 
-const user = quantum({
-    name: 'alex',
-    age: 15
-})
+const counter = createState(0)
 
-user.on('age', age => {
-    console.log('Happy Birthday!')
-})
+counter
+	.subscribe(value => {
+		console.log('value', value)
+	})
 
-user.set('age', 16)
-
-console.log(user.target)
-// { "name": "alex", "age": 16 }
+counter.next(1)
 ```
-## actions
+## Actions
 ```javascript
-const state = q1t({ count: 1 })
+const user = new State({ name: 'Max', age: 20 })
 
-const { increase } = state.createActions('count', {
-    increase: count => count + 1,
-    decrease: count => count - 1
-})
+const { incAge } = user.createActions({ incAge: user => ({ ...user, age: user.age + 1 }) })
 
-increase()
-state.get('count') // 2
-```
-## reaction to a change in one of
+incAge()
 
-```javascript
-const q1t = require('q1t')
-
-const object = q1t({
-    a: 0,
-    b: 0,
-})
-
-object.oneOf(['a', 'b'], ({ a, b }) => {
-    console.log('one of the values (a|b) has been changed', a, b)
-})
-
-object.set('a', 5)
-
-object.set('b', 16)
+user.getValue().age // 21
 ```
 
 ## Worker
@@ -63,100 +35,67 @@ ___
 
 `state.js`
 ```javascript
-import { WorkerState } from 'q1t/WorkerState'
+import { State } from 'q1t'
 
-const state = new WorkerState({
-    name: 'alex',
-    age: 15
-})
+const state = new State({ value: 1 })
+
 export default state
 ```
 `worker.js`
 ```javascript
 import state from './state.js'
 
-state.init(self)
-state.set('age', 16)
+createWorkerState(state, {
+	isWorker: true
+})
+
+state.next({ value: 2 })
 ```
 
 `main.js`
 ```javascript
 import state from './state.js'
 
-state.on('age', age => {
-    console.log(age) // 16
+state.getValue() // 1
+
+createWorkerState(state, {
+    workerUrl: 'http://example.com/workerFIle.js'
 })
-state.connect('/worker.js')
+
+state.subscribe(({ value }) => console.log(value)) // 1 -> 2
 ```
 
-## Depends
+## Depends like RxJS
 
 ```javascript
-// item with price and value in currency
-const item = q1t({ 
-    price: 2,
-    currencyPrice: 0
+const items = createState([
+	{ price: 1 },
+	{ price: 2 },
+	{ price: 3 },
+])
+
+const selectedIndex = createState(0)
+
+const selectedItem = combineLatest([items, selectedIndex])
+	.pipe(mapObservable(([items, index]) => items[index]))
+
+const currency = createState({
+	value: 1,
+	symbol: '$'
 })
 
-const currency = q1t({
-    value: 1,
-    symbol: '$'
-})
+const selectedItemPrice = combineLatest([
+	selectedItem,
+	currency,
+])
+	.pipe(mapObservable(([item, currency]) => {
+		return currency.value * item.price
+	}))
 
-item.depends([ 
-    // Depends on currency
-    currency.give(['value']) // give access to change "value"
-    // ... another depends
-], () => {
-    return ({
-        // update item prop
-        currencyPrice: currency.get('value') * item.get('price')
-    })
-})
+selectedItemPrice
+	.subscribe(price => {
+		console.log('selectedItemPrice has been updated', price)
+	})
 
-item.once('currencyPrice', currencyPrice => {
-    console.log('currencyPrice has been updated', currencyPrice)
-})
-
-currency.update({
-    symbol: '€',
-    value: 0.84,
-})
+selectedIndex.next(1)
 ```
-
-## Await change
-```javascript
-const quant = q1t({
-    name: 'Alex'
-})
-
-quant
-    .awaitChange('name')
-    .then(name => {
-        console.log('name has been changed', name)
-    })
-
-quant.set('name', 'Max')
-```
-# API
-`const state = q1t(target: Object)`
-
-* q1t(target: Object): new State(target)
-* State
-    + on(name: string, [subscribe](#subscribe)): [unsubscriber ](#unsubscriber )
-    + once(name: string, [subscribe](#subscribe)): [unsubscriber ](#unsubscriber )
-    + set(name: string, value: any)
-    + update(target)
-    + oneOf(names: [string], (target) => void): [unsubscriber ](#unsubscriber )
-    + remove(name)
-
-
-### subscribe
----
-callback that is triggered when the value changes
-```javascript
-callback(value: any, target?:object) => void
-```
-### unsubscriber 
----
-a function that unsubscribes from a change listener

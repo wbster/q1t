@@ -2,11 +2,14 @@
   "name": "q1t",
   "version": "0.4.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "scripts": {
     "test": "jest",
-    "build": "tsc",
+    "build": "tsup --entry.index ./src/index.ts --entry.operators ./src/operators/index.ts --dts --format esm,cjs --minify --treeshake",
     "version": "npm test",
+    "preversion": "npm run build",
     "docs": "typedoc"
   },
   "repository": {
@@ -28,6 +31,8 @@
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "bun-types": "^1.0.14",
+    "terser": "^5.26.0",
+    "tsup": "^8.0.1",
     "typedoc": "^0.25.4",
     "typescript": "4.9"
   }

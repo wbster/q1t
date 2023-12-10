@@ -17,6 +17,11 @@ export class Subject<E> implements IObservable<E> {
 		})
 	}
 
+	/**
+	 * @example const subscription = subject.subscribe(value => console.log(value))
+	 * subject.next('newValue') // console.log('newValue")
+	 * subscription.unsubscribe()
+	 */
 	subscribe(cb: (event: E) => void) {
 		this.subs.push(cb)
 		if (this.inited) cb(this.value as E)

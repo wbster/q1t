@@ -12,6 +12,9 @@ export class BehaviorSubject<E> extends Subject<E> {
 		return this.value as E
 	}
 
+	/**
+	 * @example subject.update(oldState => ({ ...oldState, key: 'value' }))
+	 */
 	update(fn: (target: E) => E) {
 		this.next(fn(this.getValue()))
 	}
