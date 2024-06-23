@@ -3,14 +3,15 @@ import { Subject } from "./Subject"
 type InitAction<S, A extends any[]> = (value: S, ...args: A) => S
 type InitActions<S> = { [key: string]: InitAction<S, any[]> }
 
-type ArgumentsFromActions<A> = A extends InitAction<any, infer Args> ? Args : never
+type ArgumentsFromActions<A> = A extends InitAction<any, infer Args>
+	? Args
+	: never
 
 type Actions<S, A extends InitActions<S>> = {
 	[key in keyof A]: (...args: ArgumentsFromActions<A[key]>) => void
 }
 
 export class State<T> extends Subject<T> {
-
 	constructor(value: T) {
 		super()
 		this.setValue(value)
@@ -38,7 +39,7 @@ export class State<T> extends Subject<T> {
 		for (const name in actions) {
 			const method = actions[name]
 			result[name] = (...args) => {
-				return this.update(state => method(state, ...args))
+				return this.update((state) => method(state, ...args))
 			}
 		}
 

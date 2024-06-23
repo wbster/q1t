@@ -1,56 +1,55 @@
 {
-  "name": "q1t",
-  "version": "0.4.0",
-  "description": "",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.mts",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "test": "jest",
-    "build": "vite build",
-    "version": "npm test",
-    "preversion": "npm run build",
-    "docs": "typedoc",
-    "lint": "eslint src/**/*.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wbster/q1t.git"
-  },
-  "keywords": [
-    "state",
-    "reactive",
-    "observable",
-    "observer",
-    "state",
-    "typescript",
-    "webworker",
-    "worker",
-    "react"
-  ],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@eslint/js": "^9.5.0",
-    "@types/bun": "^1.1.5",
-    "@types/jest": "^29.5.12",
-    "@types/react": "^18.3.3",
-    "@typescript/lib-dom": "npm:@types/web@^0.0.149",
-    "eslint": "^9.5.0",
-    "globals": "^15.6.0",
-    "terser": "^5.31.1",
-    "tsup": "^8.1.0",
-    "typedoc": "^0.26.1",
-    "typescript": "5.4",
-    "typescript-eslint": "^7.13.1",
-    "vite": "^5.3.1",
-    "vite-plugin-dts": "^3.9.1"
-  },
-  "optionalDependencies": {
-    "react": "^18.3.1"
-  }
+	"name": "q1t",
+	"version": "0.4.0",
+	"description": "",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.mts",
+	"type": "module",
+	"files": ["dist"],
+	"scripts": {
+		"test": "vitest .",
+		"build": "vite build",
+		"version": "npm test",
+		"preversion": "npm run build",
+		"docs": "typedoc",
+		"format": "biome format --write ./src"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wbster/q1t.git"
+	},
+	"keywords": [
+		"state",
+		"reactive",
+		"observable",
+		"observer",
+		"state",
+		"typescript",
+		"webworker",
+		"worker",
+		"react"
+	],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@biomejs/biome": "1.8.2",
+		"@eslint/js": "^9.5.0",
+		"@types/bun": "^1.1.5",
+		"@types/jest": "^29.5.12",
+		"@types/react": "^18.3.3",
+		"@typescript/lib-dom": "npm:@types/web@^0.0.149",
+		"globals": "^15.6.0",
+		"terser": "^5.31.1",
+		"tsup": "^8.1.0",
+		"typedoc": "^0.26.1",
+		"typescript": "5.4",
+		"typescript-eslint": "^7.13.1",
+		"vite": "^5.3.1",
+		"vite-plugin-dts": "^3.9.1",
+		"vitest": "^1.6.0"
+	},
+	"optionalDependencies": {
+		"react": "^18.3.1"
+	}
 }

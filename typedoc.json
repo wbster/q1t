@@ -1,10 +1,7 @@
 {
-  "excludeExternals": true,
-  "entryPoints": [
-    "./src/index.ts"
-  ],
-  "externalPattern": [
-    "**/node_modules/**"
-  ],
-  "out": "./docs"
+	"excludeExternals": true,
+	"entryPoints": ["./src/index.ts"],
+	"externalPattern": ["**/node_modules/**", "**/*.spec.ts"],
+  "exclude": ["src/**/*.spec.ts"],
+	"out": "./docs"
 }

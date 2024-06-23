@@ -1,5 +1,5 @@
-import type { Observable } from './Observable'
-import { Subscription } from './Subscription'
+import type { Observable } from "./Observable"
+import type { Subscription } from "./Subscription"
 
 export interface IObservable<E> {
 	subscribe(cb: (event: E) => void): Subscription

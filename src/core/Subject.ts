@@ -1,9 +1,8 @@
-import type { IObservable, Operator } from './IObservable'
-import { Observable } from './Observable'
-import { Subscription } from './Subscription'
+import type { IObservable, Operator } from "./IObservable"
+import { Observable } from "./Observable"
+import { Subscription } from "./Subscription"
 
 export class Subject<E> implements IObservable<E> {
-
 	protected inited = false
 	protected subs = [] as ((e: E) => void)[]
 	protected value: E | undefined = undefined
@@ -11,7 +10,7 @@ export class Subject<E> implements IObservable<E> {
 	setValue(value: E) {
 		this.inited = true
 		this.value = value
-		this.subs.forEach(sub => {
+		this.subs.forEach((sub) => {
 			sub(value)
 		})
 	}
@@ -26,13 +25,13 @@ export class Subject<E> implements IObservable<E> {
 		if (this.inited) cb(this.value as E)
 
 		return new Subscription(() => {
-			this.subs = this.subs.filter(h => h !== cb)
+			this.subs = this.subs.filter((h) => h !== cb)
 		})
 	}
 
 	pipe<R>(operator: Operator<E, R>): Observable<R> {
-		return new Observable<E>(sub => {
-			const subscription = this.subscribe(value => {
+		return new Observable<E>((sub) => {
+			const subscription = this.subscribe((value) => {
 				sub(value)
 			})
 

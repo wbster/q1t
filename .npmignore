@@ -1,6 +1,4 @@
 /node_modules
 /src
-/tsconfig.js
-/tests
 /.editorconfig
 /tsconfig.json

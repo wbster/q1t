@@ -7,6 +7,6 @@ export class LocalStorageState<T> extends State<T> {
 
 	setValue(value: T) {
 		super.setValue(value)
-		localStorage.setItem('state', JSON.stringify(value))
+		localStorage.setItem("state", JSON.stringify(value))
 	}
 }
