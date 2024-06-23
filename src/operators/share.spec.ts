@@ -10,6 +10,7 @@ describe('share', () => {
 		const obs = new Observable<number>(sub => {
 			sub(1)
 			obsConstructor()
+
 			return () => undefined
 		})
 			.pipe(share())

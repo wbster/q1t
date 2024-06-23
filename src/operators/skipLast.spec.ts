@@ -14,9 +14,9 @@ describe('skipLast', () => {
 			.pipe(skipLast(1))
 			.subscribe(sub)
 
-		subject.next(1)
-		subject.next(2)
-		subject.next(3)
+		subject.setValue(1)
+		subject.setValue(2)
+		subject.setValue(3)
 
 		expect(sub.mock.calls.length).toEqual(2)
 
@@ -36,11 +36,11 @@ describe('skipLast', () => {
 			.pipe(skipLast(1))
 			.subscribe(sub)
 
-		subject.next(1)
-		subject.next(2)
-		subject.next(3)
-		subject.next(4)
-		subject.next(5)
+		subject.setValue(1)
+		subject.setValue(2)
+		subject.setValue(3)
+		subject.setValue(4)
+		subject.setValue(5)
 
 		expect(sub.mock.calls.length).toEqual(4)
 
@@ -60,11 +60,11 @@ describe('skipLast', () => {
 			.pipe(skipLast(2))
 			.subscribe(sub)
 
-		subject.next(1)
-		subject.next(2)
-		subject.next(3)
-		subject.next(4)
-		subject.next(5)
+		subject.setValue(1)
+		subject.setValue(2)
+		subject.setValue(3)
+		subject.setValue(4)
+		subject.setValue(5)
 
 		expect(sub.mock.calls.length).toEqual(3)
 

@@ -1,9 +1,11 @@
+import type { IObservable, Operator } from "../core/IObservable"
 import { Observable } from "../core/Observable"
 
 function isEquals<T>(a: T, b: T): boolean {
 	if (a === b) return true
 	if (Array.isArray(a)) {
 		if (!Array.isArray(b)) return false
+
 		return a.length === b.length && a.every((v, i) => b[i] === v)
 	}
 	if (typeof a === 'object' && typeof b === 'object') {
@@ -13,13 +15,15 @@ function isEquals<T>(a: T, b: T): boolean {
 		const keysB = Object.keys(b) as (keyof T)[]
 		const keyLengthEquial = keysA.length === keysB.length
 		if (!keyLengthEquial) return false
+
 		return keysA.every((key) => a[key] === b[key])
 	}
+
 	return false
 }
 
-export function distinctUntilChanged<T>(isEqualCompare: (a: T, b: T) => boolean = isEquals) {
-	return (obs: Observable<T>) => {
+export function distinctUntilChanged<T>(isEqualCompare: (a: T, b: T) => boolean = isEquals): Operator<T> {
+	return (obs: IObservable<T>) => {
 		return new Observable<T>(sub => {
 			let prevInited = false
 			let prevValue: T | undefined = undefined
@@ -36,6 +40,7 @@ export function distinctUntilChanged<T>(isEqualCompare: (a: T, b: T) => boolean 
 					sub(value)
 				}
 			})
+
 			return () => subscription.unsubscribe()
 		})
 	}

@@ -1,7 +1,8 @@
+import type { IObservable, Operator } from '../core/IObservable'
 import { Observable } from '../core/Observable'
 
-export function defaultFuncIfEmpty<T>(defaultFunc: () => T) {
-	return (observable: Observable<T>) => new Observable<T>(subscriber => {
+export function defaultFuncIfEmpty<T>(defaultFunc: () => T): Operator<T> {
+	return (observable: IObservable<T>) => new Observable<T>(subscriber => {
 		let hasValue = false
 
 		const subscription = observable.subscribe(value => {

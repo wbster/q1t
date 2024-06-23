@@ -1,8 +1,9 @@
+import { Observable } from "./Observable"
+
 export type BasicEvent = { type: string }
 
 export class EventEmitter<E extends BasicEvent> {
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	 
 	private childs = [] as EventEmitter<any>[]
 	private map = new Map<E['type'], ((event: E) => void)[]>()
 
@@ -11,6 +12,7 @@ export class EventEmitter<E extends BasicEvent> {
 		const list = this.map.get(name)
 		if (!list) throw new Error('unexpected error')
 		list.push(func as ((event: E) => void))
+
 		return () => this.off(name, func)
 	}
 
@@ -19,6 +21,7 @@ export class EventEmitter<E extends BasicEvent> {
 		const list = this.map.get(name)
 		if (!list) throw new Error('unexpected error')
 		this.map.set(name, list.filter(h => h !== func))
+
 		return () => this.on(name, func)
 	}
 
@@ -35,5 +38,13 @@ export class EventEmitter<E extends BasicEvent> {
 
 	remove<N extends BasicEvent>(emitter: EventEmitter<N>) {
 		this.childs = this.childs.filter(c => c !== emitter)
+	}
+
+	toObservable<N extends E['type']>(type: N): Observable<Extract<E, { type: N }>> {
+		return new Observable(subscriber => {
+			const unsub = this.on(type, event => subscriber(event))
+
+			return () => unsub()
+		})
 	}
 }

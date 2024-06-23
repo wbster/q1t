@@ -1,19 +1,22 @@
-import { IObservable } from './IObservable'
+
+import type { IObservable, Operator } from './IObservable'
 import { Subscription } from './Subscription'
 
-export class Observable<E> implements IObservable<E> {
+export class Observable<T> implements IObservable<T> {
 
-	constructor(private subscriber: (subscriber: (event: E) => void) => (() => void)) {
-	}
+	constructor(
+		private subscriber: (subscriber: (event: T) => void) => (() => void)
+	) { }
 
-	subscribe(cb: ((event: E) => void)) {
-		const destr = this.subscriber((event: E) => {
+	subscribe(cb: ((event: T) => void)) {
+		const destroyHandler = this.subscriber((event: T) => {
 			cb(event)
 		})
-		return new Subscription(() => destr())
+
+		return new Subscription(() => destroyHandler())
 	}
 
-	pipe<R>(operator: (obs: Observable<E>) => Observable<R>) {
+	pipe<R>(operator: Operator<T, R>): Observable<R> {
 		return operator(this)
 	}
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { State } from "./State"
+import { State } from "./core/State"
 
 describe('state', () => {
 	it('actions', () => {

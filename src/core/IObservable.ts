@@ -1,6 +1,9 @@
+import type { Observable } from './Observable'
 import { Subscription } from './Subscription'
 
 export interface IObservable<E> {
 	subscribe(cb: (event: E) => void): Subscription
-	pipe<R>(operator: (obs: IObservable<E>) => IObservable<R>): IObservable<R>
+	pipe<R>(operator: Operator<E, R>): Observable<R>
 }
+
+export type Operator<T, R = T> = (obs: IObservable<T>) => Observable<R>

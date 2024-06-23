@@ -1,13 +1,13 @@
 
-import { combineLatest } from '../methods'
+import { describe, expect, mock, test } from 'bun:test'
+import { combineLatest } from '../methods/combileLatest'
 import { switchMap } from '../operators'
-import { skipAfter } from '../operators/skipAfter'
 import { mapObservable } from '../operators/mapObservable'
-import { BehaviorSubject } from './BehaviorSubject'
+import { skipAfter } from '../operators/skipAfter'
 import { EventEmitter } from './EventEmitter'
 import { Observable } from './Observable'
+import { State } from './State'
 import { Subject } from './Subject'
-import { describe, test, expect, mock } from 'bun:test'
 
 describe('observable', () => {
 
@@ -38,14 +38,14 @@ describe('observable', () => {
 
 		subject.subscribe(cb)
 
-		subject.next(false)
+		subject.setValue(false)
 
 		expect(cb.mock.calls.length).toEqual(1)
 		expect(cb.mock.calls[0][0]).toBeFalsy()
 	})
 
-	test('behaviorSubject', () => {
-		const be = new BehaviorSubject(1)
+	test('state', () => {
+		const be = new State(1)
 
 		const cb = mock((v: number) => undefined)
 		be.subscribe(cb)
@@ -62,10 +62,9 @@ describe('observable', () => {
 
 		const fn = mock(() => undefined)
 		const list = combineLatest([
-			new BehaviorSubject(1),
-			new BehaviorSubject(2)
+			new State(1),
+			new State(2)
 		])
-
 
 		list
 			.subscribe(fn)
@@ -97,11 +96,12 @@ describe('observable', () => {
 	})
 
 	test('switchMap', () => {
-		const subject = new BehaviorSubject(1)
+		const subject = new State(1)
 		const observable = subject
 			.pipe(switchMap(value => {
 				return new Observable<number>(sub => {
 					sub(value * 2)
+
 					return () => undefined
 				})
 			}))
@@ -112,7 +112,7 @@ describe('observable', () => {
 		expect(sub.mock.calls.length).toEqual(1)
 		expect(sub.mock.calls[0][0]).toEqual(2)
 
-		subject.next(2)
+		subject.setValue(2)
 
 		expect(sub.mock.calls.length).toEqual(2)
 		expect(sub.mock.calls[1][0]).toEqual(4)

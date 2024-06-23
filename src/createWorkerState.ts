@@ -1,4 +1,4 @@
-import { State } from "./State"
+import { State } from "./core/State"
 import { Observable } from "./core/Observable"
 import { Subscription } from "./core/Subscription"
 
@@ -43,7 +43,7 @@ export function createWorkerState<T>(state: State<T>, options: Options): Subscri
 
 		const onMessageSibsription = onMessage.subscribe(event => {
 			ignoreMode = true
-			state.next(event.data)
+			state.setValue(event.data)
 			ignoreMode = false
 		})
 
@@ -76,7 +76,7 @@ export function createWorkerState<T>(state: State<T>, options: Options): Subscri
 	const workerSubscription = workerObservable<T>(worker)
 		.subscribe(data => {
 			ignoreMode = true
-			state.next(data)
+			state.setValue(data)
 			ignoreMode = false
 		})
 

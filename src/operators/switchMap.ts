@@ -1,9 +1,9 @@
-import { IObservable } from "../core/IObservable"
+import type { IObservable, Operator } from "../core/IObservable"
 import { Observable } from "../core/Observable"
 import { Subscription } from "../core/Subscription"
 
-export function switchMap<T, E>(fn: (value: T) => IObservable<E>) {
-	return (obs: Observable<T>) => {
+export function switchMap<T, E>(fn: (value: T) => IObservable<E>): Operator<T, E> {
+	return (obs: IObservable<T>) => {
 		return new Observable<E>(sub => {
 			let prevSub: Subscription | null = null
 			const subscription = obs.subscribe(value => {

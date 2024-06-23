@@ -1,5 +1,4 @@
-export * from './State'
-// export * from './core/BehaviorSubject'
-// export * from './core/Observable'
-// export * from './operators'
+export * from './core/'
 export * from './createWorkerState'
+export * from './methods'
+export * from './operators'

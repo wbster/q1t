@@ -1,9 +1,9 @@
 export class Subscription {
 
-	constructor(private unsub: () => void) { }
+	constructor(private destroyHandler: () => void) { }
 
 	unsubscribe() {
-		this.unsub()
+		this.destroyHandler()
 	}
 
 }
