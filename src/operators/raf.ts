@@ -58,27 +58,40 @@ export function easeArray(
 	duration: number,
 	easeFn: (percent: number) => number = (percent) => percent,
 ): Operator<number[]> {
+	let frameId: ReturnType<typeof requestAnimationFrame> | null = null
 	return (obs: IObservable<number[]>) =>
 		new Observable<number[]>((subscriber) => {
-			let list = [] as State<number>[]
+			let prevB: number[] = []
+			let startTime = 0
+			let endTime = 0
+			const sub = obs.subscribe((b) => {
+				if (frameId) cancelAnimationFrame(frameId)
+				startTime = Date.now()
+				endTime = Date.now() + duration
+				const a = prevB.length ? prevB : b
+				function createTimer() {
+					return requestAnimationFrame(() => {
+						const currentTime = Date.now()
+						if (currentTime > endTime) {
+							prevB = b
 
-			let subscribers: Subscription | null = null
-			const subscription = obs.subscribe((array) => {
-				if (list.length === 0) {
-					list = array.map((v, i) => {
-						return new State<number>(v)
-					})
-					const observables = list.map((b) => b.pipe(ease(duration, easeFn)))
-					subscribers = combineLatest(observables).subscribe((value) => {
-						subscriber(value)
+							return subscriber(b)
+						}
+						const percent = (currentTime - startTime) / duration
+						const percentValue = easeFn(percent)
+						const nextValue = b.map((b, i) => lerp(a[i], b, percentValue))
+						prevB = nextValue
+						subscriber(nextValue)
+						frameId = createTimer()
 					})
 				}
-				array.forEach((v, i) => list[i].setValue(v))
+
+				frameId = createTimer()
 			})
 
 			return () => {
-				subscribers?.unsubscribe()
-				subscription.unsubscribe()
+				if (frameId) cancelAnimationFrame(frameId)
+				sub.unsubscribe()
 			}
 		})
 }
