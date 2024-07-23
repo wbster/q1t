@@ -1,8 +1,5 @@
 import type { IObservable, Operator } from "../core/IObservable"
 import { Observable } from "../core/Observable"
-import { State } from "../core/State"
-import type { Subscription } from "../core/Subscription"
-import { combineLatest } from "../methods/combileLatest"
 
 declare let requestAnimationFrame: (cb: () => void) => number
 declare let cancelAnimationFrame: (value: number) => void
@@ -110,6 +107,42 @@ export function toNextFrame<T>(): Operator<T> {
 			return () => {
 				if (frameId) cancelAnimationFrame(frameId)
 				sub.unsubscribe()
+			}
+		})
+	}
+}
+
+export function fromZero(duration: number): Operator<number> {
+	let frameId: ReturnType<typeof requestAnimationFrame>
+	return (obs: IObservable<number>) => {
+		return new Observable<number>((sub) => {
+			let currentTime = Date.now()
+			let endTime = Date.now() + duration
+			let currentValue = 0
+
+			function tick() {
+				return requestAnimationFrame(() => {
+					currentTime = Date.now()
+					const progress = 1 - (endTime - currentTime) / duration
+					const value = currentValue * progress
+					sub(value)
+					if (progress < 1) {
+						frameId = tick()
+					}
+				})
+			}
+
+			const subscription = obs.subscribe((value) => {
+				currentTime = Date.now()
+				endTime = currentTime + duration
+				currentValue = value
+				cancelAnimationFrame(frameId)
+				frameId = tick()
+			})
+
+			return () => {
+				cancelAnimationFrame(frameId)
+				subscription.unsubscribe()
 			}
 		})
 	}
