@@ -6,20 +6,22 @@
 ## Usage
 
 
-```javascript
-import { createState } from 'q1t'
+```typescript
+import { State, mapObservable, toNextFrame } from 'q1t'
 
-const counter = createState(0)
+const counter = new State(0)
 
 counter
-	.subscribe(value => {
-		console.log('value', value)
+	.pipe(mapObservable(n => n.toString()))
+	.pipe(toNextFrame())
+	.subscribe(valueStr => {
+		console.log('valueStr', valueStr)
 	})
 
-counter.next(1)
+counter.setValue(1)
 ```
 ## Actions
-```javascript
+```typescript
 const user = new State({ name: 'Max', age: 20 })
 
 const { incAge } = user.createActions({ incAge: user => ({ ...user, age: user.age + 1 }) })
@@ -30,39 +32,45 @@ user.getValue().age // 21
 ```
 
 ## Worker
-one state between worker and main
+send fetch request to worker
 ___
 
-`state.js`
-```javascript
-import { State } from 'q1t'
+`types.ts`
+```typescript
+export type MyJsonRpc = JsonRpc<'sum', { values: number[] }, { sum: number }>
 
-const state = new State({ value: 1 })
+export type MyNotifs = Notification<'notify_name', { any_data: boolean[] }>
 
-export default state
 ```
-`worker.js`
-```javascript
-import state from './state.js'
+`main.ts`
+```typescript
+import { connectWorker, JsonRpc, Notification } from 'q1t'
+import type { MyJsonRpc, MyNotifs } from './types.ts' 
 
-createWorkerState(state, {
-	isWorker: true
+const worker = new Worker('my_worker.js')
+
+const { fetch } = connectWorker<MyJsonRpc, MyNotifs>(worker)
+
+const responseFromWorker = await fetch({ requestName: 'sum', data: { values: [1, 2]}})
+
+console.log(resposeFromWorker) // 3
+
+```
+`worker.ts`
+```typescript
+import { connectClient } from 'q1t'
+import type { MyJsonRpc, MyNotifs } from './types.ts' 
+
+connectClient<MyJsonRpc, MyNotifs>>({
+	fetch(request) => {
+		switch(request.requestName) {
+			case 'sum': 
+				return request.data.values.reduce((acc, v) => acc + v, 0)
+			default: throw new Error('unexpected behavior')
+		}
+	}
 })
 
-state.next({ value: 2 })
-```
-
-`main.js`
-```javascript
-import state from './state.js'
-
-state.getValue() // 1
-
-createWorkerState(state, {
-    workerUrl: 'http://example.com/workerFIle.js'
-})
-
-state.subscribe(({ value }) => console.log(value)) // 1 -> 2
 ```
 
 ## Depends like RxJS
