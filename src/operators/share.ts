@@ -8,13 +8,14 @@ export function share<T>(): Operator<T> {
 	let connectedCount = 0
 	let subjectConnectSubcription: Subscription | null = null
 
-	return (obs: IObservable<T>) => {
-		if (connectedCount == 0) {
-			subjectConnectSubcription = obs.subscribe((v) => subject.setValue(v))
-		}
-
+	return (originalObs: IObservable<T>) => {
 		return subject.pipe((obs) => {
 			return new Observable<T>((sub) => {
+				if (connectedCount === 0) {
+					subjectConnectSubcription = originalObs.subscribe((v) =>
+						subject.setValue(v),
+					)
+				}
 				connectedCount++
 				const subscription = obs.subscribe((value) => sub(value))
 
