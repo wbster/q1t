@@ -18,7 +18,7 @@ counter
 		console.log('valueStr', valueStr)
 	})
 
-counter.setValue(1)
+counter.value = 1
 ```
 ## Actions
 ```typescript
@@ -28,7 +28,7 @@ const { incAge } = user.createActions({ incAge: user => ({ ...user, age: user.ag
 
 incAge()
 
-user.getValue().age // 21
+user.value.age // 21
 ```
 
 ## Worker

@@ -3,13 +3,13 @@ import type { State } from "../core/State"
 import { skip } from "../operators"
 
 export function useReactiveState<T>(state: State<T>) {
-	const value = state.getValue()
+	const value = state.value
 
 	const setValue = useCallback((value: T | ((value: T) => T)) => {
 		if (typeof value === "function") {
 			state.update(value as (v: T) => T)
 		} else {
-			state.setValue(value)
+			state.value = value
 		}
 	}, [])
 

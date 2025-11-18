@@ -10,14 +10,14 @@ describe("state", () => {
 			dec: (v) => v - 1,
 		})
 
-		expect(state.getValue()).toEqual(1)
+		expect(state.value).toEqual(1)
 
 		inc()
 
-		expect(state.getValue()).toEqual(2)
+		expect(state.value).toEqual(2)
 
 		dec()
 
-		expect(state.getValue()).toEqual(1)
+		expect(state.value).toEqual(1)
 	})
 })

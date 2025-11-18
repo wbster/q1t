@@ -13,8 +13,8 @@ function isEquals<T>(a: T, b: T): boolean {
 		if (a === null || b === null) return false
 		const keysA = Object.keys(a) as (keyof T)[]
 		const keysB = Object.keys(b) as (keyof T)[]
-		const keyLengthEquial = keysA.length === keysB.length
-		if (!keyLengthEquial) return false
+		const keyLengthEqual = keysA.length === keysB.length
+		if (!keyLengthEqual) return false
 
 		return keysA.every((key) => a[key] === b[key])
 	}
@@ -27,18 +27,18 @@ export function distinctUntilChanged<T>(
 ): Operator<T> {
 	return (obs: IObservable<T>) => {
 		return new Observable<T>((sub) => {
-			let prevInited = false
+			let prevInit = false
 			let prevValue: T | undefined = undefined
 
 			const subscription = obs.subscribe((value) => {
-				if (prevInited) {
+				if (prevInit) {
 					if (!isEqualCompare(value, prevValue as T)) {
 						sub(value)
 						prevValue = value as T
 					}
 				} else {
 					prevValue = value as T
-					prevInited = true
+					prevInit = true
 					sub(value)
 				}
 			})

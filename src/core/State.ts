@@ -1,4 +1,6 @@
-import { Subject } from "./Subject"
+import type { Operator } from "./IObservable"
+import { Observable } from "./Observable"
+import { Subscription } from "./Subscription"
 
 type InitAction<S, A extends any[]> = (value: S, ...args: A) => S
 type InitActions<S> = { [key: string]: InitAction<S, any[]> }
@@ -11,21 +13,35 @@ type Actions<S, A extends InitActions<S>> = {
 	[key in keyof A]: (...args: ArgumentsFromActions<A[key]>) => void
 }
 
-export class State<T> extends Subject<T> {
+/**
+ * @example const state = new State(0)
+ * state.value = 1
+ * state.update(oldState => oldState + 1)
+ * state.subscribe(value => console.log(value))
+ */
+export class State<T> {
+	#subs = new Set<((value: T) => void)>()
+	#value: T
 	constructor(value: T) {
-		super()
-		this.setValue(value)
+		this.#value = value
 	}
 
-	getValue(): T {
-		return this.value as T
+	get value() {
+		return this.#value
+	}
+
+	set value(value: T) {
+		this.#value = value
+		this.#subs.forEach((sub) => {
+			sub(value)
+		})
 	}
 
 	/**
-	 * @example subject.update(oldState => ({ ...oldState, key: 'value' }))
+	 * @example state.update(oldState => ({ ...oldState, key: 'value' }))
 	 */
 	update(fn: (target: T) => T) {
-		this.setValue(fn(this.getValue()))
+		this.value = fn(this.value)
 	}
 
 	/**
@@ -44,6 +60,24 @@ export class State<T> extends Subject<T> {
 		}
 
 		return result
+	}
+
+	subscribe(cb: (value: T) => void) {
+		this.#subs.add(cb)
+		cb(this.#value)
+		return new Subscription(() => {
+			this.#subs.delete(cb)
+		})
+	}
+
+	pipe<R>(operator: Operator<T, R>): Observable<R> {
+		return new Observable<T>((sub) => {
+			const subscription = this.subscribe((value) => {
+				sub(value)
+			})
+
+			return () => subscription.unsubscribe()
+		}).pipe(operator)
 	}
 }
 

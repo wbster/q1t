@@ -1,12 +1,11 @@
 import { describe, expect, test, vitest } from "vitest"
-import { combineLatest } from "../methods/combileLatest"
+import { combineLatest } from "../methods/combineLatest"
 import { switchMap } from "../operators"
 import { mapObservable } from "../operators/mapObservable"
 import { skipAfter } from "../operators/skipAfter"
 import { EventEmitter } from "./EventEmitter"
 import { Observable } from "./Observable"
 import { State } from "./State"
-import { Subject } from "./Subject"
 
 describe("observable", () => {
 	test("observable", () => {
@@ -27,17 +26,6 @@ describe("observable", () => {
 
 		expect(onCreate.mock.calls.length).toEqual(1)
 		expect(onDestroy.mock.calls.length).toEqual(1)
-	})
-	test("subject", () => {
-		const cb = vitest.fn((bool: boolean) => undefined)
-		const subject = new Subject<boolean>()
-
-		subject.subscribe(cb)
-
-		subject.setValue(false)
-
-		expect(cb.mock.calls.length).toEqual(1)
-		expect(cb.mock.calls[0][0]).toBeFalsy()
 	})
 
 	test("state", () => {
@@ -86,8 +74,8 @@ describe("observable", () => {
 	})
 
 	test("switchMap", () => {
-		const subject = new State(1)
-		const observable = subject.pipe(
+		const state = new State(1)
+		const observable = state.pipe(
 			switchMap((value) => {
 				return new Observable<number>((sub) => {
 					sub(value * 2)
@@ -103,7 +91,7 @@ describe("observable", () => {
 		expect(sub.mock.calls.length).toEqual(1)
 		expect(sub.mock.calls[0][0]).toEqual(2)
 
-		subject.setValue(2)
+		state.value = 2
 
 		expect(sub.mock.calls.length).toEqual(2)
 		expect(sub.mock.calls[1][0]).toEqual(4)

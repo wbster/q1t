@@ -47,7 +47,7 @@ export function createWorkerState<T>(
 
 		const onMessageSibsription = onMessage.subscribe((event) => {
 			ignoreMode = true
-			state.setValue(event.data)
+			state.value = event.data
 			ignoreMode = false
 		})
 
@@ -77,7 +77,7 @@ export function createWorkerState<T>(
 
 	const workerSubscription = workerObservable<T>(worker).subscribe((data) => {
 		ignoreMode = true
-		state.setValue(data)
+		state.value = data
 		ignoreMode = false
 	})
 

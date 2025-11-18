@@ -3,7 +3,7 @@ import { Observable } from "./Observable"
 export type BasicEvent = { type: string }
 
 export class EventEmitter<E extends BasicEvent> {
-	private childs = [] as EventEmitter<any>[]
+	#children = new Set<EventEmitter<any>>
 	private map = new Map<E["type"], ((event: E) => void)[]>()
 
 	on<N extends E["type"]>(
@@ -40,24 +40,24 @@ export class EventEmitter<E extends BasicEvent> {
 		const list = this.map.get(type) || []
 		const event = { type, ...data } as Extract<E, { type: N }>
 		list.forEach((handler) => handler(event))
-		this.childs.forEach((c) => c.emit(type, data))
+		this.#children.forEach((c) => c.emit(type, data))
 	}
 
 	add<N extends BasicEvent>(emitter: EventEmitter<N>) {
-		this.childs.push(emitter)
+		this.#children.add(emitter)
 	}
 
 	remove<N extends BasicEvent>(emitter: EventEmitter<N>) {
-		this.childs = this.childs.filter((c) => c !== emitter)
+		this.#children.delete(emitter)
 	}
 
 	toObservable<N extends E["type"]>(
 		type: N,
 	): Observable<Extract<E, { type: N }>> {
 		return new Observable((subscriber) => {
-			const unsub = this.on(type, (event) => subscriber(event))
+			const un = this.on(type, (event) => subscriber(event))
 
-			return () => unsub()
+			return () => un()
 		})
 	}
 }
