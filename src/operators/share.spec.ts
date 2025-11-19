@@ -1,5 +1,5 @@
+import { Observable } from "@/core/Observable"
 import { describe, expect, test, vitest } from "vitest"
-import { Observable } from "../core/Observable"
 import { share } from "./share"
 
 describe("share", () => {

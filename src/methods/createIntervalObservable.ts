@@ -1,4 +1,4 @@
-import { Observable } from "../core/Observable"
+import { Observable } from "@/core/Observable"
 
 export function createIntervalObservable(time: number) {
 	return new Observable<void>((s) => {

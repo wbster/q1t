@@ -1,6 +1,6 @@
+import { State } from "@/core/State"
 import { describe, expect, it, vitest } from "vitest"
 import { skipLast } from "./skipLast"
-import { State } from "../core"
 
 describe("skipLast", () => {
 	it("test 1", () => {

@@ -1,5 +1,5 @@
-import { EventEmitter } from "../core/EventEmitter"
-import type { MaybePromise } from "../types"
+import { EventEmitter } from "@/core/EventEmitter"
+import type { MaybePromise } from "@/types"
 
 export type JsonRpc<N extends string, T, ResponseData> = {
 	name: N

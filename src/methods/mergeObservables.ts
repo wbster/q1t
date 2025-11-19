@@ -1,4 +1,4 @@
-import { Observable } from "../core/Observable"
+import { Observable } from "@/core/Observable"
 
 export function mergeObservables<T>(list: Observable<T>[]): Observable<T> {
 	return new Observable<T>((sub) => {

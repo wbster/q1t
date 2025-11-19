@@ -1,5 +1,5 @@
-import type { IObservable, Operator } from "../core/IObservable"
-import { Observable } from "../core/Observable"
+import type { IObservable, Operator } from "@/core/IObservable"
+import { Observable } from "@/core/Observable"
 
 export function sample<T, E>(obsTrigger: Observable<T>): Operator<E> {
 	return (prevObservable: IObservable<E>) => {

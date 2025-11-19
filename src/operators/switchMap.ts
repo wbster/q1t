@@ -1,6 +1,6 @@
-import type { IObservable, Operator } from "../core/IObservable"
-import { Observable } from "../core/Observable"
-import type { Subscription } from "../core/Subscription"
+import type { IObservable, Operator } from "@/core/IObservable"
+import { Observable } from "@/core/Observable"
+import type { Subscription } from "@/core/Subscription"
 
 export function switchMap<T, E>(
 	fn: (value: T) => IObservable<E>,

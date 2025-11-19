@@ -1,4 +1,4 @@
-import { Observable } from "../core/Observable"
+import { Observable } from "@/core/Observable"
 
 export function createTimeoutObservable(time: number) {
 	return new Observable<void>((s) => {

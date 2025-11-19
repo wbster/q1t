@@ -1,4 +1,5 @@
-import { Observable, type IObservable, type Operator } from "../core"
+import type { IObservable, Operator } from "@/core/IObservable";
+import { Observable } from "@/core/Observable";
 
 export function withPrevValue<T>(): Operator<
 	T,

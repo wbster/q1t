@@ -1,4 +1,5 @@
-import { type Operator, type IObservable, Observable } from "../core"
+import type { IObservable, Operator } from "@/core/IObservable"
+import { Observable } from "@/core/Observable"
 
 export function debounceOperator<T>(time: number): Operator<T, T> {
 	return (obs: IObservable<T>) => {

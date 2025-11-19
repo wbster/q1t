@@ -1,5 +1,5 @@
-import type { IObservable } from "../core/IObservable"
-import { Observable } from "../core/Observable"
+import type { IObservable } from "@/core/IObservable"
+import { Observable } from "@/core/Observable"
 
 type ObsValue<T> = T extends IObservable<infer U>
 	? U

@@ -1,5 +1,6 @@
 import { defineConfig } from "vite"
 import dts from "vite-plugin-dts"
+import path from "path"
 
 export default defineConfig({
 	build: {
@@ -13,6 +14,11 @@ export default defineConfig({
 		},
 		outDir: "./dist",
 		minify: "esbuild",
+	},
+	resolve: {
+		alias: {
+			"@": path.resolve(__dirname, "src"),
+		}
 	},
 	plugins: [
 		dts({

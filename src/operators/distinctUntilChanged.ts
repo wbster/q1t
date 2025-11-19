@@ -1,5 +1,5 @@
-import type { IObservable, Operator } from "../core/IObservable"
-import { Observable } from "../core/Observable"
+import type { IObservable, Operator } from "@/core/IObservable"
+import { Observable } from "@/core/Observable"
 
 function isEquals<T>(a: T, b: T): boolean {
 	if (a === b) return true

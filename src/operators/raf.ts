@@ -1,5 +1,5 @@
-import type { IObservable, Operator } from "../core/IObservable"
-import { Observable } from "../core/Observable"
+import type { IObservable, Operator } from "@/core/IObservable"
+import { Observable } from "@/core/Observable"
 
 declare let requestAnimationFrame: (cb: () => void) => number
 declare let cancelAnimationFrame: (value: number) => void

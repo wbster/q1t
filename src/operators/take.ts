@@ -1,5 +1,5 @@
-import { Observable } from "../core"
-import type { IObservable, Operator } from "../core/IObservable"
+import type { IObservable, Operator } from "@/core/IObservable"
+import { Observable } from "@/core/Observable"
 
 export function take<T>(count: number): Operator<T> {
 	return (obs: IObservable<T>) => {

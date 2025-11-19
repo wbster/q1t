@@ -1,7 +1,7 @@
-import { State } from "../core"
-import type { IObservable, Operator } from "../core/IObservable"
-import { Observable } from "../core/Observable"
-import type { Subscription } from "../core/Subscription"
+import type { IObservable, Operator } from "@/core/IObservable"
+import { Observable } from "@/core/Observable"
+import { State } from "@/core/State"
+import type { Subscription } from "@/core/Subscription"
 import { existsOperator } from "./existsOperator"
 
 export function share<T>(): Operator<T> {

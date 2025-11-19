@@ -38,6 +38,20 @@ export class State<T> {
 	}
 
 	/**
+	 * @deprecated use value instead
+	 */
+	getValue() {
+		return this.value
+	}
+
+	/**
+	 * @deprecated use value instead
+	 */
+	setValue(value: T) {
+		this.value = value
+	}
+
+	/**
 	 * @example state.update(oldState => ({ ...oldState, key: 'value' }))
 	 */
 	update(fn: (target: T) => T) {

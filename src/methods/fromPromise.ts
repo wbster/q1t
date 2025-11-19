@@ -1,4 +1,4 @@
-import { Observable } from "../core"
+import { Observable } from "@/core/Observable";
 
 export function fromPromise<T>(
 	promise: Promise<T>,

@@ -1,4 +1,4 @@
-import { skip } from "../operators"
+import { skip } from "@/operators/skip"
 import { State } from "./State"
 
 export const createLocalStorageState = <T>(key: string, initialValue: T) => {

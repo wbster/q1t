@@ -1,4 +1,4 @@
-import { Observable } from "../core/Observable"
+import { Observable } from "@/core/Observable"
 
 export function createFetchObservable(input: Request, init?: RequestInit) {
 	return new Observable<Response>((s) => {
