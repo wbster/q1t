@@ -1,15 +1,14 @@
-import type { IObservable } from "@/core/IObservable";
-import { Observable } from "@/core/Observable";
-import { combineLatest } from "@/methods/combineLatest";
-import { distinctUntilChanged } from "@/operators/distinctUntilChanged";
-import { mapObservable } from "@/operators/mapObservable";
+import type { IObservable } from "@/core/IObservable"
+import type { Observable } from "@/core/Observable"
+import { combineLatest } from "@/methods/combineLatest"
+import { distinctUntilChanged } from "@/operators/distinctUntilChanged"
+import { mapObservable } from "@/operators/mapObservable"
 
-type ObsValue<T> =
-	T extends IObservable<infer U>
-		? U
-		: {
-				[K in keyof T]: T[K] extends IObservable<infer U> ? U : never;
-			};
+type ObsValue<T> = T extends IObservable<infer U>
+	? U
+	: {
+			[K in keyof T]: T[K] extends IObservable<infer U> ? U : never
+		}
 
 export function computed<
 	T extends IObservable<any>[] | [IObservable<any>, ...IObservable<any>[]],
@@ -21,5 +20,5 @@ export function computed<
 ): Observable<R> {
 	return combineLatest(observables)
 		.pipe(mapObservable((values) => computeValue(values as ObsValue<T>)))
-		.pipe(distinctUntilChanged(isEqualCompare));
+		.pipe(distinctUntilChanged(isEqualCompare))
 }

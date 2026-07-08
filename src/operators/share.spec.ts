@@ -12,10 +12,10 @@ describe("share", () => {
 			return () => undefined
 		}).pipe(share())
 
-		const subscriber = vitest.fn((v: number) => undefined)
+		const subscriber = vitest.fn((_v: number) => undefined)
 		obs.subscribe(subscriber)
 
-		const subscriber2 = vitest.fn((v: number) => undefined)
+		const subscriber2 = vitest.fn((_v: number) => undefined)
 		obs.subscribe(subscriber2)
 
 		expect(obsConstructor.mock.calls.length).toEqual(1)

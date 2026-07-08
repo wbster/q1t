@@ -13,9 +13,9 @@ export function share<T>(): Operator<T> {
 		return currentState.pipe(existsOperator()).pipe((obs) => {
 			return new Observable<T>((sub) => {
 				if (connectedCount === 0) {
-					currentStateSubscription = originalObs.subscribe((v) =>
-						currentState.value = v,
-					)
+					currentStateSubscription = originalObs.subscribe((v) => {
+						currentState.value = v
+					})
 				}
 				connectedCount++
 				const subscription = obs.subscribe((value) => sub(value))

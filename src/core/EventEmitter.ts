@@ -3,13 +3,10 @@ import { Observable } from "./Observable"
 export type BasicEvent = { type: string }
 
 export class EventEmitter<E extends BasicEvent> {
-	#children = new Set<EventEmitter<any>>
+	#children = new Set<EventEmitter<any>>()
 	private map = new Map<E["type"], ((event: E) => void)[]>()
 
-	on<N extends E["type"]>(
-		name: N,
-		func: (event: Extract<E, { type: N }>) => void,
-	) {
+	on<N extends E["type"]>(name: N, func: (event: Extract<E, { type: N }>) => void) {
 		if (!this.map.has(name)) this.map.set(name, [])
 		const list = this.map.get(name)
 		if (!list) throw new Error("unexpected error")
@@ -18,10 +15,7 @@ export class EventEmitter<E extends BasicEvent> {
 		return () => this.off(name, func)
 	}
 
-	off<N extends E["type"]>(
-		name: N,
-		func: (event: Extract<E, { type: N }>) => void,
-	) {
+	off<N extends E["type"]>(name: N, func: (event: Extract<E, { type: N }>) => void) {
 		if (!this.map.has(name)) this.map.set(name, [])
 		const list = this.map.get(name)
 		if (!list) throw new Error("unexpected error")
@@ -33,10 +27,7 @@ export class EventEmitter<E extends BasicEvent> {
 		return () => this.on(name, func)
 	}
 
-	emit<N extends E["type"]>(
-		type: N,
-		data: Omit<Extract<E, { type: N }>, "type">,
-	) {
+	emit<N extends E["type"]>(type: N, data: Omit<Extract<E, { type: N }>, "type">) {
 		const list = this.map.get(type) || []
 		const event = { type, ...data } as Extract<E, { type: N }>
 		list.forEach((handler) => handler(event))
@@ -51,9 +42,7 @@ export class EventEmitter<E extends BasicEvent> {
 		this.#children.delete(emitter)
 	}
 
-	toObservable<N extends E["type"]>(
-		type: N,
-	): Observable<Extract<E, { type: N }>> {
+	toObservable<N extends E["type"]>(type: N): Observable<Extract<E, { type: N }>> {
 		return new Observable((subscriber) => {
 			const un = this.on(type, (event) => subscriber(event))
 

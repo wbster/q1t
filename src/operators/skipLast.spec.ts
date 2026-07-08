@@ -24,7 +24,7 @@ describe("skipLast", () => {
 	it("test 2", () => {
 		const state = new State<number>(0)
 
-		const sub = vitest.fn((v: number) => undefined)
+		const sub = vitest.fn((_v: number) => undefined)
 
 		state.pipe(skipLast(1)).subscribe(sub)
 
@@ -44,7 +44,7 @@ describe("skipLast", () => {
 	it("test 3", () => {
 		const state = new State<number>(0)
 
-		const sub = vitest.fn((v: number) => undefined)
+		const sub = vitest.fn((_v: number) => undefined)
 
 		state.pipe(skipLast(2)).subscribe(sub)
 

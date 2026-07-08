@@ -4,8 +4,8 @@ import { Observable } from "@/core/Observable"
 type ObsValue<T> = T extends IObservable<infer U>
 	? U
 	: {
-		[K in keyof T]: T[K] extends IObservable<infer U> ? U : never
-	}
+			[K in keyof T]: T[K] extends IObservable<infer U> ? U : never
+		}
 
 export function combineLatest<
 	T extends IObservable<any>[] | [IObservable<any>, ...IObservable<any>[]],

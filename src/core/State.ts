@@ -5,9 +5,7 @@ import { Subscription } from "./Subscription"
 type InitAction<S, A extends any[]> = (value: S, ...args: A) => S
 type InitActions<S> = { [key: string]: InitAction<S, any[]> }
 
-type ArgumentsFromActions<A> = A extends InitAction<any, infer Args>
-	? Args
-	: never
+type ArgumentsFromActions<A> = A extends InitAction<any, infer Args> ? Args : never
 
 type Actions<S, A extends InitActions<S>> = {
 	[key in keyof A]: (...args: ArgumentsFromActions<A[key]>) => void
@@ -20,7 +18,7 @@ type Actions<S, A extends InitActions<S>> = {
  * state.subscribe(value => console.log(value))
  */
 export class State<T> {
-	#subs = new Set<((value: T) => void)>()
+	#subs = new Set<(value: T) => void>()
 	#value: T
 	constructor(value: T) {
 		this.#value = value

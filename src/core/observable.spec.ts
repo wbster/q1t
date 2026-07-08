@@ -85,7 +85,7 @@ describe("observable", () => {
 			}),
 		)
 
-		const sub = vitest.fn((v: number) => undefined)
+		const sub = vitest.fn((_v: number) => undefined)
 		observable.subscribe(sub)
 
 		expect(sub.mock.calls.length).toEqual(1)
