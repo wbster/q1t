@@ -28,6 +28,8 @@
 	"scripts": {
 		"clean": "rm -rf dist",
 		"test": "vitest run .",
+		"typecheck": "tsc --noEmit",
+		"lint": "biome check ./src",
 		"build": "npm run clean && vite build",
 		"prepublishOnly": "npm run build",
 		"version": "npm test",
@@ -39,12 +41,19 @@
 		"type": "git",
 		"url": "https://github.com/wbster/q1t.git"
 	},
+	"homepage": "https://github.com/wbster/q1t#readme",
+	"bugs": {
+		"url": "https://github.com/wbster/q1t/issues"
+	},
+	"funding": {
+		"type": "github",
+		"url": "https://github.com/sponsors/wbster"
+	},
 	"keywords": [
 		"state",
 		"reactive",
 		"observable",
 		"observer",
-		"state",
 		"typescript",
 		"webworker",
 		"worker",
@@ -55,14 +64,19 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.8.2",
 		"@typescript/lib-dom": "npm:@types/web@^0.0.149",
+		"@types/react": "^18.3.3",
 		"typedoc": "^0.26.1",
 		"typescript": "5.4",
 		"vite": "^5.3.1",
 		"vite-plugin-dts": "^3.9.1",
 		"vitest": "^1.6.0"
 	},
-	"optionalDependencies": {
-		"@types/react": "^18.3.3",
-		"react": "^18.3.1"
+	"peerDependencies": {
+		"react": "^18.3.1 || ^19.0.0"
+	},
+	"peerDependenciesMeta": {
+		"react": {
+			"optional": true
+		}
 	}
 }

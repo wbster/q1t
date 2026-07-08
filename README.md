@@ -72,6 +72,24 @@ selectedItemPrice.subscribe((price) => {
 selectedIndex.value = 1
 ```
 
+## Computed values
+
+```ts
+import { State, computed } from "q1t"
+
+const price = new State(100)
+const quantity = new State(2)
+const discount = new State(0.1)
+
+const total = computed([price, quantity, discount], ([p, q, d]) => p * q * (1 - d))
+
+total.subscribe((value) => {
+	console.log("total", value)
+})
+
+quantity.value = 3
+```
+
 ## Worker RPC example
 
 `types.ts`

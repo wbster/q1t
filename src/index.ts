@@ -6,6 +6,7 @@ export { State } from '@/core/State'
 export { Subscription } from '@/core/Subscription'
 
 export { combineLatest } from '@/methods/combineLatest'
+export { computed } from '@/methods/computed'
 export { createFetchObservable } from '@/methods/createFetchObservable'
 export { createIntervalObservable } from '@/methods/createIntervalObservable'
 export { createTimeoutObservable } from '@/methods/createTimeoutObservable'
