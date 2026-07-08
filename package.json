@@ -4,14 +4,32 @@
 	"description": "",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
-	"types": "./dist/index.d.mts",
+	"types": "./dist/index.d.ts",
 	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs",
+			"default": "./dist/index.js"
+		}
+	},
+	"sideEffects": false,
 	"files": [
 		"dist"
 	],
+	"engines": {
+		"node": ">=18"
+	},
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
+	},
 	"scripts": {
+		"clean": "rm -rf dist",
 		"test": "vitest run .",
-		"build": "vite build",
+		"build": "npm run clean && vite build",
+		"prepublishOnly": "npm run build",
 		"version": "npm test",
 		"preversion": "npm run build",
 		"docs": "typedoc",
