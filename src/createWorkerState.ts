@@ -1,5 +1,5 @@
-import type { State } from "./core/State"
 import { Observable } from "./core/Observable"
+import type { State } from "./core/State"
 import { Subscription } from "./core/Subscription"
 
 type Options =
@@ -13,7 +13,7 @@ type Options =
 			workerUrl: URL | string
 	  }
 
-declare var self: any
+declare let self: Worker
 
 function createOnMessage<T>() {
 	return new Observable<MessageEvent<T>>((sub) => {
@@ -35,10 +35,7 @@ function workerObservable<T>(worker: Worker) {
 	})
 }
 
-export function createWorkerState<T>(
-	state: State<T>,
-	options: Options,
-): Subscription {
+export function createWorkerState<T>(state: State<T>, options: Options): Subscription {
 	let ignoreMode = false
 
 	const subs = [] as Subscription[]

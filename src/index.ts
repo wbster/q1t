@@ -1,34 +1,34 @@
-export { EventEmitter } from '@/core/EventEmitter'
-export { type IObservable, type Operator } from '@/core/IObservable'
-export { createLocalStorageState } from '@/core/LocalStorageState'
-export { Observable } from '@/core/Observable'
-export { State } from '@/core/State'
-export { Subscription } from '@/core/Subscription'
+export { EventEmitter } from "@/core/EventEmitter"
+export { type IObservable, type Operator } from "@/core/IObservable"
+export { createLocalStorageState } from "@/core/LocalStorageState"
+export { Observable } from "@/core/Observable"
+export { State } from "@/core/State"
+export { Subscription } from "@/core/Subscription"
 
-export { combineLatest } from '@/methods/combineLatest'
-export { createFetchObservable } from '@/methods/createFetchObservable'
-export { createIntervalObservable } from '@/methods/createIntervalObservable'
-export { createTimeoutObservable } from '@/methods/createTimeoutObservable'
-export { fromPromise } from '@/methods/fromPromise'
-export { mergeObservables } from '@/methods/mergeObservables'
+export { combineLatest } from "@/methods/combineLatest"
+export { computed } from "@/methods/computed"
+export { createFetchObservable } from "@/methods/createFetchObservable"
+export { createIntervalObservable } from "@/methods/createIntervalObservable"
+export { createTimeoutObservable } from "@/methods/createTimeoutObservable"
+export { fromPromise } from "@/methods/fromPromise"
+export { mergeObservables } from "@/methods/mergeObservables"
 
-export { debounceOperator } from '@/operators/debounceOperator'
-export { defaultFuncIfEmpty } from '@/operators/defaultFuncIfEmpty'
-export { distinctUntilChanged } from '@/operators/distinctUntilChanged'
-export { existsOperator } from '@/operators/existsOperator'
-export { filterObservable } from '@/operators/filterObservable'
-export { mapObservable } from '@/operators/mapObservable'
-export { ease, easeArray, fromZero, toNextFrame } from '@/operators/raf'
-export { sample } from '@/operators/sample'
-export { share } from '@/operators/share'
-export { skip } from '@/operators/skip'
-export { skipAfter } from '@/operators/skipAfter'
-export { skipLast } from '@/operators/skipLast'
-export { switchMap } from '@/operators/switchMap'
-export { take } from '@/operators/take'
-export { tap } from '@/operators/tap'
-export { withPrevValue } from '@/operators/withPrevValue'
+export { debounceOperator } from "@/operators/debounceOperator"
+export { defaultFuncIfEmpty } from "@/operators/defaultFuncIfEmpty"
+export { distinctUntilChanged } from "@/operators/distinctUntilChanged"
+export { existsOperator } from "@/operators/existsOperator"
+export { filterObservable } from "@/operators/filterObservable"
+export { mapObservable } from "@/operators/mapObservable"
+export { ease, easeArray, fromZero, toNextFrame } from "@/operators/raf"
+export { sample } from "@/operators/sample"
+export { share } from "@/operators/share"
+export { skip } from "@/operators/skip"
+export { skipAfter } from "@/operators/skipAfter"
+export { skipLast } from "@/operators/skipLast"
+export { switchMap } from "@/operators/switchMap"
+export { take } from "@/operators/take"
+export { tap } from "@/operators/tap"
+export { withPrevValue } from "@/operators/withPrevValue"
 
 export * from "@/createWorkerState"
-export * from '@/worker'
-
+export * from "@/worker"

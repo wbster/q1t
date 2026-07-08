@@ -10,30 +10,27 @@ export type JsonRpc<N extends string, T, ResponseData> = {
 
 export type JsonRpcRequest<M extends JsonRpc<string, any, any>> = {
 	requestName: RequestName<M>
-	data: M['request']
+	data: M["request"]
 	_fetchUniqId?: number
 }
 
 export type JsonRpcResponse<M extends JsonRpc<string, any, any>> = {
-	data: M['response']
+	data: M["response"]
 	_fetchUniqId?: number
 }
 
-export type ResponseData<M extends JsonRpc<string, any, any>> = M['response']
-export type RequestName<M extends JsonRpc<string, any, any>> = M['name']
+export type ResponseData<M extends JsonRpc<string, any, any>> = M["response"]
+export type RequestName<M extends JsonRpc<string, any, any>> = M["name"]
 
 export type Notification<N extends string, T> = {
 	notificationName: N
 	data: T
 }
 
-export type NotificationData<N extends Notification<string, any>> = N['data']
-export type NotificationName<N extends Notification<string, any>> =
-	N['notificationName']
+export type NotificationData<N extends Notification<string, any>> = N["data"]
+export type NotificationName<N extends Notification<string, any>> = N["notificationName"]
 
-export function isWorkerMessage<M extends JsonRpc<string, any, any>>(
-	message: any,
-): message is M {
+export function isWorkerMessage<M extends JsonRpc<string, any, any>>(message: any): message is M {
 	return message.requestName !== undefined || message._fetchUniqId !== undefined
 }
 
@@ -43,9 +40,7 @@ export function isJsonRpcRequest<M extends JsonRpc<string, any, any>>(
 	return message.requestName !== undefined
 }
 
-export function isNotification<N extends Notification<string, any>>(
-	message: any,
-): message is N {
+export function isNotification<N extends Notification<string, any>>(message: any): message is N {
 	return message.notificationName !== undefined
 }
 
@@ -57,15 +52,14 @@ export function connectWorker<
 	N extends Notification<string, any>,
 >(worker: Worker) {
 	const emitter = new EventEmitter<
-		| { type: 'response'; data: JsonRpcResponse<M> }
-		| { type: 'notification'; data: N }
+		{ type: "response"; data: JsonRpcResponse<M> } | { type: "notification"; data: N }
 	>()
 
 	function handleMessage(message: JsonRpcResponse<M> | N) {
-		if ('_fetchUniqId' in message) {
-			emitter.emit('response', { data: message })
+		if ("_fetchUniqId" in message) {
+			emitter.emit("response", { data: message })
 		} else {
-			emitter.emit('notification', { data: message as N })
+			emitter.emit("notification", { data: message as N })
 		}
 	}
 
@@ -77,7 +71,7 @@ export function connectWorker<
 			handleMessage(message)
 		}
 	}
-	worker.addEventListener('message', handle)
+	worker.addEventListener("message", handle)
 
 	const queue = [] as unknown[]
 	function push(message: unknown) {
@@ -92,33 +86,31 @@ export function connectWorker<
 	}
 
 	return {
-		sendNotification<Name extends N['notificationName']>(
+		sendNotification<Name extends N["notificationName"]>(
 			name: Name,
-			data: Extract<N, { notificationName: Name }>['data'],
+			data: Extract<N, { notificationName: Name }>["data"],
 		) {
 			push({ notificationName: name, data })
 		},
 
-		onNotification: emitter.toObservable('notification'),
+		onNotification: emitter.toObservable("notification"),
 
 		destroy() {
 			worker.terminate()
 		},
 
 		fetch<S extends M>(
-			request: Omit<JsonRpcRequest<S>, '_fetchUniqId'>,
-		): Promise<Omit<JsonRpcResponse<S>, '_fetchUniqId'>> {
+			request: Omit<JsonRpcRequest<S>, "_fetchUniqId">,
+		): Promise<Omit<JsonRpcResponse<S>, "_fetchUniqId">> {
 			const requestId = Math.random()
 
-			return new Promise((resolve, reject) => {
-				const sub = emitter
-					.toObservable('response')
-					.subscribe(({ data: response }) => {
-						if (response._fetchUniqId === requestId) {
-							resolve(response)
-							sub.unsubscribe()
-						}
-					})
+			return new Promise((resolve) => {
+				const sub = emitter.toObservable("response").subscribe(({ data: response }) => {
+					if (response._fetchUniqId === requestId) {
+						resolve(response)
+						sub.unsubscribe()
+					}
+				})
 				push({ ...request, _fetchUniqId: requestId })
 			})
 		},
@@ -132,8 +124,8 @@ export function connectClient<
 	M extends JsonRpc<string, any, any>,
 	N extends Notification<string, any>,
 >(options: {
-	fetch: (request: JsonRpcRequest<M>) => MaybePromise<JsonRpcResponse<M>>,
-	notificationHandler: (notification: N) => void,
+	fetch: (request: JsonRpcRequest<M>) => MaybePromise<JsonRpcResponse<M>>
+	notificationHandler: (notification: N) => void
 }) {
 	const queue = [] as unknown[]
 
@@ -151,7 +143,7 @@ export function connectClient<
 
 	const handleMessage = (message: unknown) => {
 		if (isJsonRpcRequest<M>(message)) {
-			if ('fetch' in options) {
+			if ("fetch" in options) {
 				const result = options.fetch(message)
 				if (result instanceof Promise) {
 					result.then((response) => {
@@ -161,13 +153,13 @@ export function connectClient<
 					push({ ...result, _fetchUniqId: message._fetchUniqId })
 				}
 			} else {
-				console.warn('No fetch function provided')
+				console.warn("No fetch function provided")
 			}
 		} else if (isNotification<N>(message)) {
-			if ('notificationHandler' in options) {
+			if ("notificationHandler" in options) {
 				options.notificationHandler(message)
 			} else {
-				console.warn('No notificationHandler provided')
+				console.warn("No notificationHandler provided")
 			}
 		}
 	}
@@ -181,9 +173,9 @@ export function connectClient<
 		}
 	}
 
-	self.addEventListener('message', handle)
+	self.addEventListener("message", handle)
 
 	return () => {
-		self.removeEventListener('message', handle)
+		self.removeEventListener("message", handle)
 	}
 }
